@@ -1,9 +1,15 @@
-from django.shortcuts import render,redirect,get_list_or_404
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Note
 
-@login_required
 def home(request):
+  if request.user.is_authenticated:
+    return redirect("notes")
+  
+  return render(request,"notes/home.html")
+
+@login_required
+def notes(request):
   notes = Note.objects.filter(user=request.user) # to make app user-specific.
 
   return render(
@@ -25,6 +31,48 @@ def create_note(request):
       content=content
     )
 
-    return redirect("home")
+    return redirect("notes")
 
   return render(request,"notes/create_note.html")
+
+
+@login_required
+def edit_note(request,id):
+  note = get_object_or_404(
+    Note,
+    id=id,
+    user=request.user
+  )
+
+  if request.method == "POST":
+    note.title = request.POST["title"]
+    note.content = request.POST["content"]
+
+    note.save()
+
+    return redirect("notes")
+
+  return render(
+    request,
+    "notes/edit_note.html",
+    {"note":note}
+  )
+
+@login_required
+def delete_note(request,id):
+
+  note = get_object_or_404(
+    Note,
+    id=id,
+    user=request.user
+  )
+
+  if request.method == "POST":
+    note.delete()
+    return redirect("notes")
+
+  return render(
+    request,
+    "notes/delete_note.html",
+    {"note":note}
+  )
