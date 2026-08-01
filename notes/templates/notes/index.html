@@ -8,13 +8,35 @@
 
     <h1>NotesApp</h1>
 
-    <h2>Welcome, {{ user.username }} 👋</h2>
+    <p>Welcome, {{ user.username }}!</p>
 
-    <a href="#">Create Note</a>
+    <a href="{% url 'create_note' %}">
+        Create Note
+    </a>
 
-    <br><br>
+    <a href="{% url 'logout' %}">
+        Logout
+    </a>
 
-    <a href="{% url 'logout' %}">Logout</a>
+    <hr>
+
+    {% for note in notes %}
+
+        <div>
+
+            <h2>{{ note.title }}</h2>
+
+            <p>{{ note.content }}</p>
+
+        </div>
+
+        <hr>
+
+    {% empty %}
+
+        <p>You haven't created any notes yet.</p>
+
+    {% endfor %}
 
 </body>
 </html>
