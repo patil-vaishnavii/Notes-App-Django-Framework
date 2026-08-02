@@ -26,7 +26,11 @@ Sign Up
 
         <br><br>
 
-        <button type="submit">Register</button>
+        <button type="submit">Register</button><br>
+
+        {% if error%}
+            <p>{{ error }}</p>
+        {% endif %}
 
     </form>
 

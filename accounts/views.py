@@ -10,6 +10,13 @@ def register(request):
     email = request.POST["email"]
     password = request.POST["password"]
 
+    if User.objects.filter(username=username).exists():
+      return render(
+        request,
+        "accounts/register.html",
+        {"error":"Username already exists."}
+      )
+    
     user = User.objects.create_user(
       username=username,
       email=email,
@@ -27,15 +34,30 @@ def login_view(request):
     username = request.POST["username"]
     password = request.POST["password"]
 
+    try:
+      user = User.objects.get(username=username)
+    except User.DoesNotExist:
+      return render(
+        request,
+        "accounts/login.html",
+        {"error":"Invalid username."}
+      )
+
     user = authenticate(
       request,
       username=username,
       password=password
     )
 
-    if user is not None:
-      login(request,user)
-      return redirect("home")
+    if user is None:
+      return render(
+        request,
+        "accounts/login.html",
+        {"error":"Invalid password."}
+      )
+
+    login(request,user)
+    return redirect("home")
 
   return render(request,"accounts/login.html")
 

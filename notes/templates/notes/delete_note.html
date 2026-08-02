@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Delete Note</title>
-</head>
+{% extends "base.html" %}
 
-<body>
-
-    <h1>Delete Note</h1>
+{% block content %}
+    <h1>Delete Note</h1><br>
 
     <p>
         Are you sure you want to delete
         "<strong>{{ note.title }}</strong>"?
-    </p>
+    </p><br>
 
     <form method="POST">
 
@@ -19,7 +14,7 @@
 
         <button type="submit">
             Yes, Delete
-        </button>
+        </button><br><br>
 
         <a href="{% url 'home' %}">
             Cancel
@@ -27,5 +22,4 @@
 
     </form>
 
-</body>
-</html>
+{% endblock %}
