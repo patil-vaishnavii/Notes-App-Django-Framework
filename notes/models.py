@@ -10,5 +10,8 @@ class Note(models.Model):
   title = models.CharField(max_length=200)
   content = models.TextField()
 
+  class Meta:
+    db_table = "note"
+
   def __str__(self):
     return self.title
